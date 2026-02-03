@@ -68,6 +68,27 @@
             margin-bottom: 20px;
         }
         
+        .form-group-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            padding: 8px 0;
+        }
+        
+        .form-group-checkbox label {
+            margin-bottom: 0;
+            font-weight: normal;
+            color: #555;
+            cursor: pointer;
+        }
+        
+        .form-group-checkbox input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+        
         label {
             display: block;
             margin-bottom: 8px;
@@ -264,6 +285,22 @@
             margin-bottom: 20px;
         }
         
+        .urgent-badge {
+            background-color: #e74c3c;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        
+        .urgent-date {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
         .footer {
             width: 100%;
             text-align: center;
@@ -316,8 +353,13 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="date">Fecha de la Cita:</label>
+                    <label for="date">Fecha de la Cita: <span id="todayBadge" class="urgent-badge" style="display: none;">HOY</span></label>
                     <input type="date" id="date" required>
+                </div>
+                
+                <div class="form-group-checkbox">
+                    <input type="checkbox" id="sameDayAppointment">
+                    <label for="sameDayAppointment">Cita para hoy mismo</label>
                 </div>
                 
                 <div class="form-group">
@@ -375,7 +417,7 @@
                     <div class="detail-item">
                         <div class="detail-icon"><i class="fas fa-calendar-day"></i></div>
                         <div class="detail-label">Fecha:</div>
-                        <div class="detail-value" id="preview-date">6/02/2026</div>
+                        <div class="detail-value" id="preview-date">6/02/2026 <span id="preview-today-badge" class="urgent-badge" style="display: none;">HOY</span></div>
                     </div>
                     
                     <div class="detail-item">
@@ -512,6 +554,16 @@
             return `${day}/${month}/${year}`;
         }
         
+        // Función para verificar si una fecha es hoy
+        function isToday(dateString) {
+            const today = new Date();
+            const selectedDate = new Date(dateString);
+            
+            return today.getDate() === selectedDate.getDate() &&
+                   today.getMonth() === selectedDate.getMonth() &&
+                   today.getFullYear() === selectedDate.getFullYear();
+        }
+        
         // Función para formatear la hora
         function formatTime(timeString) {
             if (!timeString) return "00:00";
@@ -545,7 +597,19 @@
             const date = document.getElementById('preview-date').textContent;
             const time = document.getElementById('preview-time').textContent;
             
-            return `Te confirmamos que tu cita para el proceso de matrícula de:\n${course} ha sido agendada con éxito ✅\n\n👤 Nombre: ${name}\n🆔 C.c: ${id}\n🗓️ Fecha: ${date}\n⏰ Hora: ${time}\n\n📑 Documentación: Por favor, trae los documentos requeridos. En caso de no tenerlos completos, podrás entregarlos el primer día de clases.\n\n👩‍🏫 Al llegar, recuerda mencionar que fuiste asesorado(a) por Miguel Benedetty, asesor educativo de la Corporación Internacional Elyon Yireh Barranquilla 💙\n\n📍 Dirección: CRA 38 N.º 54-60, Barrio El Recreo, Barranquilla.`;
+            // Verificar si es una cita para hoy
+            const isTodayAppointment = document.getElementById('sameDayAppointment').checked;
+            
+            let appointmentText = `Te confirmamos que tu cita para el proceso de matrícula de:\n${course} ha sido agendada con éxito ✅\n\n👤 Nombre: ${name}\n🆔 C.c: ${id}\n🗓️ Fecha: ${date}`;
+            
+            // Agregar nota si es para hoy
+            if (isTodayAppointment) {
+                appointmentText += ` ⚡ (HOY)`;
+            }
+            
+            appointmentText += `\n⏰ Hora: ${time}\n\n📑 Documentación: Por favor, trae los documentos requeridos. En caso de no tenerlos completos, podrás entregarlos el primer día de clases.\n\n👩‍🏫 Al llegar, recuerda mencionar que fuiste asesorado(a) por Miguel Benedetty, asesor educativo de la Corporación Internacional Elyon Yireh Barranquilla 💙\n\n📍 Dirección: CRA 38 N.º 54-60, Barrio El Recreo, Barranquilla.`;
+            
+            return appointmentText;
         }
         
         // Función para copiar la cita al portapapeles
@@ -601,6 +665,7 @@
             const id = document.getElementById('id').value || "1001937397";
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
+            const isTodayAppointment = document.getElementById('sameDayAppointment').checked;
             
             // Actualizar los elementos de vista previa
             document.getElementById('preview-course').textContent = course.toUpperCase();
@@ -609,9 +674,27 @@
             
             // Formatear y mostrar la fecha
             if (date) {
-                document.getElementById('preview-date').textContent = formatDate(date);
+                const formattedDate = formatDate(date);
+                document.getElementById('preview-date').innerHTML = formattedDate;
+                
+                // Verificar si es hoy y mostrar badge
+                if (isToday(new Date(date))) {
+                    const badge = document.createElement('span');
+                    badge.className = 'urgent-badge';
+                    badge.textContent = 'HOY';
+                    badge.id = 'preview-today-badge';
+                    document.getElementById('preview-date').appendChild(badge);
+                    document.getElementById('todayBadge').style.display = 'inline-block';
+                } else {
+                    document.getElementById('todayBadge').style.display = 'none';
+                    const existingBadge = document.getElementById('preview-today-badge');
+                    if (existingBadge) {
+                        existingBadge.remove();
+                    }
+                }
             } else {
                 document.getElementById('preview-date').textContent = "6/02/2026";
+                document.getElementById('todayBadge').style.display = 'none';
             }
             
             // Formatear y mostrar la hora
@@ -620,6 +703,15 @@
             } else {
                 document.getElementById('preview-time').textContent = "00:00";
             }
+        }
+        
+        // Función para establecer la fecha a hoy
+        function setDateToToday() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('date').value = formattedDate;
+            document.getElementById('date').min = formattedDate; // Permitir hoy y futuras fechas
+            updatePreview();
         }
         
         // Función para generar la confirmación
@@ -636,11 +728,27 @@
                 return;
             }
             
+            // Verificar si es una cita para hoy
+            const isTodayAppointment = isToday(new Date(date));
+            
+            // Mostrar mensaje especial si es para hoy
+            if (isTodayAppointment) {
+                const confirmToday = confirm("⚠️ ESTÁS AGENDANDO UNA CITA PARA HOY MISMO.\n\n¿Estás seguro de que la cita es para hoy?");
+                if (!confirmToday) {
+                    return;
+                }
+            }
+            
             // Actualizar la vista previa
             updatePreview();
             
             // Mostrar mensaje de éxito
-            alert("¡Confirmación de cita generada con éxito!\n\nLos datos han sido actualizados en la vista previa.");
+            let successMessage = "¡Confirmación de cita generada con éxito!\n\nLos datos han sido actualizados en la vista previa.";
+            if (isTodayAppointment) {
+                successMessage = "⚡ ¡CITA PARA HOY AGENDADA CON ÉXITO!\n\nLos datos han sido actualizados en la vista previa. Recuerda notificar al estudiante inmediatamente.";
+            }
+            
+            alert(successMessage);
         }
         
         // Función para restablecer el formulario
@@ -655,23 +763,25 @@
             tomorrow.setDate(tomorrow.getDate() + 1);
             const formattedDate = tomorrow.toISOString().split('T')[0];
             document.getElementById('date').value = formattedDate;
+            document.getElementById('date').min = formattedDate;
             
             document.getElementById('time').value = "16:00";
+            document.getElementById('sameDayAppointment').checked = false;
             
             updatePreview(); // Restablecer la vista previa a los valores por defecto
             alert("Formulario restablecido. Puede ingresar nuevos datos.");
         }
         
-        // Establecer la fecha mínima como hoy
+        // Establecer valores iniciales
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date();
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
             
             // Formatear la fecha para el input date (YYYY-MM-DD)
-            const formattedDate = tomorrow.toISOString().split('T')[0];
-            document.getElementById('date').value = formattedDate;
-            document.getElementById('date').min = formattedDate;
+            const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+            document.getElementById('date').value = formattedTomorrow;
+            document.getElementById('date').min = today.toISOString().split('T')[0]; // Permitir desde hoy
             
             // Establecer valores iniciales en la vista previa
             updatePreview();
@@ -697,6 +807,21 @@
             document.getElementById('id').addEventListener('input', updatePreview);
             document.getElementById('date').addEventListener('change', updatePreview);
             document.getElementById('time').addEventListener('change', updatePreview);
+            
+            // Configurar el checkbox para cita hoy mismo
+            document.getElementById('sameDayAppointment').addEventListener('change', function() {
+                if (this.checked) {
+                    setDateToToday();
+                } else {
+                    // Si se desmarca, establecer fecha para mañana
+                    const today = new Date();
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+                    document.getElementById('date').value = formattedTomorrow;
+                    updatePreview();
+                }
+            });
             
             // Configurar botones
             document.getElementById('generateBtn').addEventListener('click', generateConfirmation);
