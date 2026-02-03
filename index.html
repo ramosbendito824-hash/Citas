@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Confirmación de Cita</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-container, .preview-container {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+        }
+        
+        .preview {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 25px;
+            min-height: 600px;
+            border: 1px solid #eee;
+        }
+        
+        .confirmation-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #3498db;
+        }
+        
+        .success-icon {
+            color: #27ae60;
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .confirmation-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .detail-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .detail-icon {
+            color: #3498db;
+            margin-right: 12px;
+            margin-top: 3px;
+            min-width: 20px;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            min-width: 150px;
+            color: #7f8c8d;
+        }
+        
+        .detail-value {
+            color: #2c3e50;
+        }
+        
+        .advisor-note {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 25px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .address {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            border: 1px dashed #ddd;
+        }
+        
+        .preview-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .preview-actions .btn {
+            width: auto;
+            flex: 1;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .course-suggestions {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 6px 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            position: absolute;
+            width: 100%;
+            z-index: 100;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .course-suggestion-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .course-suggestion-item:hover {
+            background-color: #f5f7fa;
+        }
+        
+        .form-group-relative {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .footer {
+            width: 100%;
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .form-container, .preview-container {
+                width: 100%;
+            }
+            
+            .preview-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Generador de Confirmación de Cita</h1>
+            <p>Complete el formulario con los datos del estudiante para generar automáticamente la confirmación de cita para el proceso de matrícula.</p>
+        </div>
+        
+        <div class="form-container">
+            <h2 class="section-title">Formulario de Datos</h2>
+            <form id="appointmentForm">
+                <div class="form-group-relative">
+                    <label for="course">Curso:</label>
+                    <input type="text" id="course" placeholder="Ej: CURSO DE MONTACARGAS" value="CURSO DE MONTACARGAS" required>
+                    <div id="courseSuggestions" class="course-suggestions"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">Nombre Completo:</label>
+                    <input type="text" id="name" placeholder="Ej: Víctor Alfonso Escorcia Vellio" value="Víctor Alfonso Escorcia Vellio" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id">Número de Cédula:</label>
+                    <input type="text" id="id" placeholder="Ej: 1001937397" value="1001937397" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="date">Fecha de la Cita:</label>
+                    <input type="date" id="date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="time">Hora de la Cita:</label>
+                    <select id="time" required>
+                        <option value="">Seleccione una hora</option>
+                        <option value="08:00">08:00 AM</option>
+                        <option value="09:00">09:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="14:00">02:00 PM</option>
+                        <option value="15:00">03:00 PM</option>
+                        <option value="16:00" selected>04:00 PM</option>
+                        <option value="17:00">05:00 PM</option>
+                    </select>
+                </div>
+                
+                <button type="button" id="generateBtn" class="btn">
+                    <i class="fas fa-calendar-check"></i> Generar Confirmación de Cita
+                </button>
+                
+                <button type="button" id="resetBtn" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Restablecer Formulario
+                </button>
+            </form>
+        </div>
+        
+        <div class="preview-container">
+            <h2 class="section-title">Vista Previa de Confirmación</h2>
+            <div class="preview">
+                <div class="confirmation-card">
+                    <h3 class="confirmation-title">
+                        <i class="fas fa-check-circle success-icon"></i> Cita Agendada con Éxito
+                    </h3>
+                    
+                    <p style="margin-bottom: 20px;">Te confirmamos que tu cita para el proceso de matrícula de:</p>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Curso:</div>
+                        <div class="detail-value" id="preview-course">CURSO DE MONTACARGAS</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-user"></i></div>
+                        <div class="detail-label">Nombre:</div>
+                        <div class="detail-value" id="preview-name">Víctor Alfonso Escorcia Vellio</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-id-card"></i></div>
+                        <div class="detail-label">C.C:</div>
+                        <div class="detail-value" id="preview-id">1001937397</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-calendar-day"></i></div>
+                        <div class="detail-label">Fecha:</div>
+                        <div class="detail-value" id="preview-date">6/02/2026</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-clock"></i></div>
+                        <div class="detail-label">Hora:</div>
+                        <div class="detail-value" id="preview-time">04:00 PM</div>
+                    </div>
+                    
+                    <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <p><strong>Documentación:</strong> Por favor, trae los documentos requeridos. En caso de no tenerlos completos, podrás entregarlos el primer día de clases.</p>
+                    </div>
+                    
+                    <div class="advisor-note">
+                        <p><i class="fas fa-chalkboard-teacher"></i> Al llegar, recuerda mencionar que fuiste asesorado(a) por <strong>Miguel Benedetty</strong>, asesor educativo de la Corporación Internacional Elyon Yireh Barranquilla 💙</p>
+                    </div>
+                    
+                    <div class="address">
+                        <p><strong><i class="fas fa-map-marker-alt"></i> Dirección:</strong> CRA 38 N.º 54-60, Barrio El Recreo, Barranquilla.</p>
+                    </div>
+                    
+                    <div class="preview-actions">
+                        <button type="button" id="copyBtn" class="btn btn-success">
+                            <i class="far fa-copy"></i> Copiar Cita
+                        </button>
+                        <button type="button" id="whatsappBtn" class="btn" style="background-color: #25D366;">
+                            <i class="fab fa-whatsapp"></i> Compartir por WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Corporación Internacional Elyon Yireh Barranquilla © 2026 | Esta herramienta es para uso interno</p>
+        </div>
+    </div>
+
+    <div id="copyNotification" class="copy-notification">
+        <i class="fas fa-check-circle"></i>
+        <span>¡Cita copiada al portapapeles!</span>
+    </div>
+
+    <script>
+        // Lista de cursos sugeridos (puedes ampliar esta lista)
+        const suggestedCourses = [
+            "CURSO DE MONTACARGAS",
+            "CURSO DE SEGURIDAD INDUSTRIAL",
+            "CURSO DE OPERACIÓN DE MAQUINARIA PESADA",
+            "CURSO DE PRIMEROS AUXILIOS",
+            "CURSO DE TRABAJO EN ALTURAS",
+            "CURSO DE MANEJO DEFENSIVO",
+            "CURSO DE ELECTRICIDAD BÁSICA",
+            "CURSO DE SOLDADURA",
+            "CURSO DE MANIPULACIÓN DE ALIMENTOS",
+            "CURSO DE INGLÉS BÁSICO",
+            "CURSO DE INFORMÁTICA",
+            "CURSO DE CONTABILIDAD BÁSICA",
+            "CURSO DE ATENCIÓN AL CLIENTE",
+            "CURSO DE LOGÍSTICA Y ALMACENAMIENTO"
+        ];
+        
+        // Función para mostrar sugerencias de cursos
+        function showCourseSuggestions() {
+            const input = document.getElementById('course');
+            const suggestionsContainer = document.getElementById('courseSuggestions');
+            const inputValue = input.value.toLowerCase();
+            
+            // Limpiar sugerencias anteriores
+            suggestionsContainer.innerHTML = '';
+            
+            // Si el campo está vacío, mostrar algunas sugerencias populares
+            if (inputValue === '') {
+                const popularCourses = suggestedCourses.slice(0, 5);
+                popularCourses.forEach(course => {
+                    const item = document.createElement('div');
+                    item.className = 'course-suggestion-item';
+                    item.textContent = course;
+                    item.onclick = () => {
+                        input.value = course;
+                        suggestionsContainer.style.display = 'none';
+                        updatePreview();
+                    };
+                    suggestionsContainer.appendChild(item);
+                });
+                suggestionsContainer.style.display = 'block';
+                return;
+            }
+            
+            // Filtrar cursos que coincidan con lo que el usuario está escribiendo
+            const filteredCourses = suggestedCourses.filter(course => 
+                course.toLowerCase().includes(inputValue)
+            );
+            
+            // Mostrar hasta 8 sugerencias
+            const maxSuggestions = 8;
+            const suggestionsToShow = filteredCourses.slice(0, maxSuggestions);
+            
+            if (suggestionsToShow.length > 0) {
+                suggestionsToShow.forEach(course => {
+                    const item = document.createElement('div');
+                    item.className = 'course-suggestion-item';
+                    
+                    // Resaltar la parte que coincide
+                    const startIndex = course.toLowerCase().indexOf(inputValue);
+                    if (startIndex !== -1) {
+                        const before = course.substring(0, startIndex);
+                        const match = course.substring(startIndex, startIndex + inputValue.length);
+                        const after = course.substring(startIndex + inputValue.length);
+                        
+                        item.innerHTML = `${before}<strong>${match}</strong>${after}`;
+                    } else {
+                        item.textContent = course;
+                    }
+                    
+                    item.onclick = () => {
+                        input.value = course;
+                        suggestionsContainer.style.display = 'none';
+                        updatePreview();
+                    };
+                    suggestionsContainer.appendChild(item);
+                });
+                suggestionsContainer.style.display = 'block';
+            } else {
+                suggestionsContainer.style.display = 'none';
+            }
+        }
+        
+        // Función para formatear la fecha
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+        
+        // Función para formatear la hora
+        function formatTime(timeString) {
+            if (!timeString) return "00:00";
+            
+            const [hour, minute] = timeString.split(':');
+            const hourNum = parseInt(hour);
+            
+            if (hourNum === 0) return "00:00";
+            
+            if (hourNum < 12) {
+                return `${hour}:${minute} AM`;
+            } else if (hourNum === 12) {
+                return `12:${minute} PM`;
+            } else {
+                return `${hourNum - 12}:${minute} PM`;
+            }
+        }
+        
+        // Función para capitalizar el nombre
+        function capitalizeName(name) {
+            return name.toLowerCase().split(' ').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+        
+        // Función para generar el texto de la cita para copiar
+        function generateAppointmentText() {
+            const course = document.getElementById('preview-course').textContent;
+            const name = document.getElementById('preview-name').textContent;
+            const id = document.getElementById('preview-id').textContent;
+            const date = document.getElementById('preview-date').textContent;
+            const time = document.getElementById('preview-time').textContent;
+            
+            return `Te confirmamos que tu cita para el proceso de matrícula de:\n${course} ha sido agendada con éxito ✅\n\n👤 Nombre: ${name}\n🆔 C.c: ${id}\n🗓️ Fecha: ${date}\n⏰ Hora: ${time}\n\n📑 Documentación: Por favor, trae los documentos requeridos. En caso de no tenerlos completos, podrás entregarlos el primer día de clases.\n\n👩‍🏫 Al llegar, recuerda mencionar que fuiste asesorado(a) por Miguel Benedetty, asesor educativo de la Corporación Internacional Elyon Yireh Barranquilla 💙\n\n📍 Dirección: CRA 38 N.º 54-60, Barrio El Recreo, Barranquilla.`;
+        }
+        
+        // Función para copiar la cita al portapapeles
+        async function copyAppointmentToClipboard() {
+            try {
+                const appointmentText = generateAppointmentText();
+                
+                // Usar la API del portapapeles moderna
+                await navigator.clipboard.writeText(appointmentText);
+                
+                // Mostrar notificación de éxito
+                showCopyNotification();
+            } catch (err) {
+                // Fallback para navegadores antiguos
+                console.error('Error al copiar: ', err);
+                
+                // Método alternativo
+                const textArea = document.createElement('textarea');
+                textArea.value = generateAppointmentText();
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Mostrar notificación de éxito
+                showCopyNotification();
+            }
+        }
+        
+        // Función para mostrar notificación de copiado
+        function showCopyNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Función para compartir por WhatsApp
+        function shareOnWhatsApp() {
+            const appointmentText = generateAppointmentText();
+            const encodedText = encodeURIComponent(appointmentText);
+            const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        // Función para actualizar la vista previa
+        function updatePreview() {
+            const course = document.getElementById('course').value || "CURSO DE MONTACARGAS";
+            const name = document.getElementById('name').value || "Víctor Alfonso Escorcia Vellio";
+            const id = document.getElementById('id').value || "1001937397";
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            
+            // Actualizar los elementos de vista previa
+            document.getElementById('preview-course').textContent = course.toUpperCase();
+            document.getElementById('preview-name').textContent = capitalizeName(name);
+            document.getElementById('preview-id').textContent = id;
+            
+            // Formatear y mostrar la fecha
+            if (date) {
+                document.getElementById('preview-date').textContent = formatDate(date);
+            } else {
+                document.getElementById('preview-date').textContent = "6/02/2026";
+            }
+            
+            // Formatear y mostrar la hora
+            if (time) {
+                document.getElementById('preview-time').textContent = formatTime(time);
+            } else {
+                document.getElementById('preview-time').textContent = "00:00";
+            }
+        }
+        
+        // Función para generar la confirmación
+        function generateConfirmation() {
+            // Validar que todos los campos estén completos
+            const course = document.getElementById('course').value;
+            const name = document.getElementById('name').value;
+            const id = document.getElementById('id').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            
+            if (!course || !name || !id || !date || !time) {
+                alert("Por favor, complete todos los campos del formulario antes de generar la confirmación.");
+                return;
+            }
+            
+            // Actualizar la vista previa
+            updatePreview();
+            
+            // Mostrar mensaje de éxito
+            alert("¡Confirmación de cita generada con éxito!\n\nLos datos han sido actualizados en la vista previa.");
+        }
+        
+        // Función para restablecer el formulario
+        function resetForm() {
+            document.getElementById('course').value = "CURSO DE MONTACARGAS";
+            document.getElementById('name').value = "Víctor Alfonso Escorcia Vellio";
+            document.getElementById('id').value = "1001937397";
+            
+            // Establecer fecha por defecto (mañana)
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const formattedDate = tomorrow.toISOString().split('T')[0];
+            document.getElementById('date').value = formattedDate;
+            
+            document.getElementById('time').value = "16:00";
+            
+            updatePreview(); // Restablecer la vista previa a los valores por defecto
+            alert("Formulario restablecido. Puede ingresar nuevos datos.");
+        }
+        
+        // Establecer la fecha mínima como hoy
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            // Formatear la fecha para el input date (YYYY-MM-DD)
+            const formattedDate = tomorrow.toISOString().split('T')[0];
+            document.getElementById('date').value = formattedDate;
+            document.getElementById('date').min = formattedDate;
+            
+            // Establecer valores iniciales en la vista previa
+            updatePreview();
+            
+            // Configurar eventos para el campo de curso
+            const courseInput = document.getElementById('course');
+            courseInput.addEventListener('input', function() {
+                updatePreview();
+                showCourseSuggestions();
+            });
+            
+            courseInput.addEventListener('focus', showCourseSuggestions);
+            
+            // Ocultar sugerencias cuando se hace clic fuera
+            document.addEventListener('click', function(e) {
+                if (e.target.id !== 'course' && !e.target.closest('.course-suggestion-item')) {
+                    document.getElementById('courseSuggestions').style.display = 'none';
+                }
+            });
+            
+            // Configurar eventos para los otros campos
+            document.getElementById('name').addEventListener('input', updatePreview);
+            document.getElementById('id').addEventListener('input', updatePreview);
+            document.getElementById('date').addEventListener('change', updatePreview);
+            document.getElementById('time').addEventListener('change', updatePreview);
+            
+            // Configurar botones
+            document.getElementById('generateBtn').addEventListener('click', generateConfirmation);
+            document.getElementById('resetBtn').addEventListener('click', resetForm);
+            document.getElementById('copyBtn').addEventListener('click', copyAppointmentToClipboard);
+            document.getElementById('whatsappBtn').addEventListener('click', shareOnWhatsApp);
+        });
+    </script>
+</body>
+</html>
