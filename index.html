@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>!Hey coso¡</title>
+    <title>Generador de Confirmación de Cita</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -16,65 +16,70 @@
         body {
             background-color: #f5f7fa;
             color: #333;
-            line-height: 1.6;
-            padding: 20px;
+            line-height: 1.5;
+            padding: 15px;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             display: flex;
             flex-wrap: wrap;
-            gap: 30px;
+            gap: 20px;
         }
         
         .header {
             width: 100%;
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 2px solid #3498db;
         }
         
         .header h1 {
             color: #2c3e50;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
         }
         
         .header p {
             color: #7f8c8d;
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
+            font-size: 0.95rem;
         }
         
         .form-container, .preview-container {
             flex: 1;
-            min-width: 300px;
+            min-width: 280px;
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            padding: 20px;
         }
         
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group-small {
+            margin-bottom: 12px;
         }
         
         .form-group-checkbox {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            padding: 8px 0;
+            gap: 8px;
+            margin: 10px 0 15px 0;
+            padding: 5px 0;
         }
         
         .form-group-checkbox label {
@@ -82,57 +87,60 @@
             font-weight: normal;
             color: #555;
             cursor: pointer;
+            font-size: 0.9rem;
         }
         
         .form-group-checkbox input[type="checkbox"] {
             width: auto;
             cursor: pointer;
+            transform: scale(0.9);
         }
         
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: #2c3e50;
+            font-size: 0.9rem;
         }
         
         input, select {
             width: 100%;
-            padding: 12px 15px;
+            padding: 10px 12px;
             border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
         }
         
         input:focus, select:focus {
             outline: none;
             border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
         }
         
         .btn {
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 14px 20px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 0.95rem;
             font-weight: 600;
             width: 100%;
-            transition: all 0.3s;
-            margin-top: 10px;
+            transition: all 0.2s;
+            margin-top: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .btn:hover {
             background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
         }
         
         .btn:active {
@@ -157,99 +165,109 @@
         
         .preview {
             background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 25px;
-            min-height: 600px;
+            border-radius: 7px;
+            padding: 20px;
+            min-height: 500px;
             border: 1px solid #eee;
         }
         
         .confirmation-card {
             background-color: white;
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid #3498db;
+            border-radius: 7px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border-left: 4px solid #3498db;
         }
         
         .success-icon {
             color: #27ae60;
-            font-size: 24px;
-            margin-right: 10px;
+            font-size: 20px;
+            margin-right: 8px;
         }
         
         .confirmation-title {
             color: #2c3e50;
-            margin-bottom: 20px;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
         }
         
         .detail-item {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: flex-start;
         }
         
         .detail-icon {
             color: #3498db;
-            margin-right: 12px;
-            margin-top: 3px;
-            min-width: 20px;
+            margin-right: 10px;
+            margin-top: 2px;
+            min-width: 16px;
+            font-size: 0.9rem;
         }
         
         .detail-label {
             font-weight: 600;
-            min-width: 150px;
+            min-width: 120px;
             color: #7f8c8d;
+            font-size: 0.9rem;
         }
         
         .detail-value {
             color: #2c3e50;
+            font-size: 0.95rem;
+            line-height: 1.4;
         }
         
         .advisor-note {
             background-color: #e8f4fc;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 25px;
-            border-left: 4px solid #3498db;
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 3px solid #3498db;
+            font-size: 0.9rem;
         }
         
         .address {
             background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 15px;
             border: 1px dashed #ddd;
+            font-size: 0.9rem;
         }
         
         .preview-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 18px;
         }
         
         .preview-actions .btn {
             width: auto;
             flex: 1;
+            padding: 10px 14px;
+            font-size: 0.9rem;
         }
         
         .copy-notification {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            right: 15px;
             background-color: #27ae60;
             color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             z-index: 1000;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
+            transform: translateY(15px);
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
         }
         
         .copy-notification.show {
@@ -260,20 +278,21 @@
         .course-suggestions {
             background-color: white;
             border: 1px solid #ddd;
-            border-radius: 0 0 6px 6px;
-            max-height: 200px;
+            border-radius: 0 0 5px 5px;
+            max-height: 180px;
             overflow-y: auto;
             position: absolute;
             width: 100%;
             z-index: 100;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
             display: none;
         }
         
         .course-suggestion-item {
-            padding: 10px 15px;
+            padding: 8px 12px;
             cursor: pointer;
             transition: background-color 0.2s;
+            font-size: 0.9rem;
         }
         
         .course-suggestion-item:hover {
@@ -282,17 +301,17 @@
         
         .form-group-relative {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .urgent-badge {
             background-color: #e74c3c;
             color: white;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.75rem;
             font-weight: 600;
-            margin-left: 10px;
+            margin-left: 8px;
             display: inline-block;
         }
         
@@ -304,16 +323,26 @@
         .footer {
             width: 100%;
             text-align: center;
-            margin-top: 40px;
+            margin-top: 30px;
             color: #7f8c8d;
-            font-size: 0.9rem;
-            padding-top: 20px;
+            font-size: 0.85rem;
+            padding-top: 15px;
             border-top: 1px solid #eee;
+        }
+        
+        .date-time-container {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .date-time-container > div {
+            flex: 1;
         }
         
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
+                gap: 15px;
             }
             
             .form-container, .preview-container {
@@ -323,32 +352,95 @@
             .preview-actions {
                 flex-direction: column;
             }
+            
+            .date-time-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .form-container, .preview-container {
+                padding: 15px;
+            }
+            
+            .preview {
+                padding: 15px;
+            }
+            
+            .confirmation-card {
+                padding: 15px;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                margin-bottom: 10px;
+            }
+            
+            .detail-label {
+                min-width: 100%;
+                margin-bottom: 3px;
+            }
         }
     </style>
 </head>
-<body>    
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Generador de Confirmación de Cita</h1>
+            <p>Complete el formulario con los datos del estudiante para generar automáticamente la confirmación de cita</p>
+        </div>
+        
         <div class="form-container">
-            <h2 class="section-title">Formulario de Datos</h2>
+            <h2 class="section-title">Datos de la Cita</h2>
             <form id="appointmentForm">
                 <div class="form-group-relative">
                     <label for="course">Curso:</label>
-                    <input type="text" id="course" placeholder="Ej: CURSO DE MONTACARGA" value="" required>
+                    <input type="text" id="course" placeholder="Ej: CURSO DE MONTACARGAS" value="CURSO DE MONTACARGAS" required>
                     <div id="courseSuggestions" class="course-suggestions"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="name">Nombre Completo:</label>
-                    <input type="text" id="name" placeholder="" required>
+                    <input type="text" id="name" placeholder="Ej: Víctor Alfonso Escorcia Vellio" value="Víctor Alfonso Escorcia Vellio" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="id">Número de Cédula:</label>
-                    <input type="text" id="id" placeholder="Ej: 1001937397"  required>
+                    <input type="text" id="id" placeholder="Ej: 1001937397" value="1001937397" required>
                 </div>
                 
-                <div class="form-group">
-                    <label for="date">Fecha de la Cita: <span id="todayBadge" class="urgent-badge" style="display: none;">HOY</span></label>
-                    <input type="date" id="date" required>
+                <div class="date-time-container">
+                    <div>
+                        <label for="date">Fecha:</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div>
+                        <label for="time">Hora:</label>
+                        <select id="time" required>
+                            <option value="">Seleccionar</option>
+                            <option value="08:00">08:00 AM</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00" selected>04:00 PM</option>
+                            <option value="17:00">05:00 PM</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="form-group-checkbox">
@@ -356,40 +448,25 @@
                     <label for="sameDayAppointment">Cita para hoy mismo</label>
                 </div>
                 
-                <div class="form-group">
-                    <label for="time">Hora de la Cita:</label>
-                    <select id="time" required>
-                        <option value="">Seleccione una hora</option>
-                        <option value="08:00">08:00 AM</option>
-                        <option value="09:00">09:00 AM</option>
-                        <option value="10:00">10:00 AM</option>
-                        <option value="11:00">11:00 AM</option>
-                        <option value="14:00">02:00 PM</option>
-                        <option value="15:00">03:00 PM</option>
-                        <option value="16:00" selected>04:00 PM</option>
-                        <option value="17:00">05:00 PM</option>
-                    </select>
-                </div>
-                
                 <button type="button" id="generateBtn" class="btn">
-                    <i class="fas fa-calendar-check"></i> Generar Confirmación de Cita
+                    <i class="fas fa-calendar-check"></i> Generar Confirmación
                 </button>
                 
                 <button type="button" id="resetBtn" class="btn btn-secondary">
-                    <i class="fas fa-redo"></i> Restablecer Formulario
+                    <i class="fas fa-redo"></i> Restablecer
                 </button>
             </form>
         </div>
         
         <div class="preview-container">
-            <h2 class="section-title">Vista Previa de Confirmación</h2>
+            <h2 class="section-title">Vista Previa</h2>
             <div class="preview">
                 <div class="confirmation-card">
                     <h3 class="confirmation-title">
-                        <i class="fas fa-check-circle success-icon"></i> Cita Agendada con Éxito
+                        <i class="fas fa-check-circle success-icon"></i> Cita Agendada
                     </h3>
                     
-                    <p style="margin-bottom: 20px;">Te confirmamos que tu cita para el proceso de matrícula de:</p>
+                    <p style="margin-bottom: 15px; font-size: 0.95rem;">Te confirmamos que tu cita para el proceso de matrícula de:</p>
                     
                     <div class="detail-item">
                         <div class="detail-label">Curso:</div>
@@ -420,7 +497,7 @@
                         <div class="detail-value" id="preview-time">04:00 PM</div>
                     </div>
                     
-                    <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; font-size: 0.9rem;">
                         <p><strong>Documentación:</strong> Por favor, trae los documentos requeridos. En caso de no tenerlos completos, podrás entregarlos el primer día de clases.</p>
                     </div>
                     
@@ -437,7 +514,7 @@
                             <i class="far fa-copy"></i> Copiar Cita
                         </button>
                         <button type="button" id="whatsappBtn" class="btn" style="background-color: #25D366;">
-                            <i class="fab fa-whatsapp"></i> Compartir por WhatsApp
+                            <i class="fab fa-whatsapp"></i> WhatsApp
                         </button>
                     </div>
                 </div>
@@ -455,7 +532,7 @@
     </div>
 
     <script>
-        // Lista de cursos sugeridos (puedes ampliar esta lista)
+        // Lista de cursos sugeridos
         const suggestedCourses = [
             "CURSO DE MONTACARGAS",
             "CURSO DE SEGURIDAD INDUSTRIAL",
@@ -479,10 +556,8 @@
             const suggestionsContainer = document.getElementById('courseSuggestions');
             const inputValue = input.value.toLowerCase();
             
-            // Limpiar sugerencias anteriores
             suggestionsContainer.innerHTML = '';
             
-            // Si el campo está vacío, mostrar algunas sugerencias populares
             if (inputValue === '') {
                 const popularCourses = suggestedCourses.slice(0, 5);
                 popularCourses.forEach(course => {
@@ -500,12 +575,10 @@
                 return;
             }
             
-            // Filtrar cursos que coincidan con lo que el usuario está escribiendo
             const filteredCourses = suggestedCourses.filter(course => 
                 course.toLowerCase().includes(inputValue)
             );
             
-            // Mostrar hasta 8 sugerencias
             const maxSuggestions = 8;
             const suggestionsToShow = filteredCourses.slice(0, maxSuggestions);
             
@@ -514,7 +587,6 @@
                     const item = document.createElement('div');
                     item.className = 'course-suggestion-item';
                     
-                    // Resaltar la parte que coincide
                     const startIndex = course.toLowerCase().indexOf(inputValue);
                     if (startIndex !== -1) {
                         const before = course.substring(0, startIndex);
@@ -591,12 +663,10 @@
             const date = document.getElementById('preview-date').textContent;
             const time = document.getElementById('preview-time').textContent;
             
-            // Verificar si es una cita para hoy
             const isTodayAppointment = document.getElementById('sameDayAppointment').checked;
             
             let appointmentText = `Te confirmamos que tu cita para el proceso de matrícula de:\n${course} ha sido agendada con éxito ✅\n\n👤 Nombre: ${name}\n🆔 C.c: ${id}\n🗓️ Fecha: ${date}`;
             
-            // Agregar nota si es para hoy
             if (isTodayAppointment) {
                 appointmentText += ` ⚡ (HOY)`;
             }
@@ -611,16 +681,12 @@
             try {
                 const appointmentText = generateAppointmentText();
                 
-                // Usar la API del portapapeles moderna
                 await navigator.clipboard.writeText(appointmentText);
                 
-                // Mostrar notificación de éxito
                 showCopyNotification();
             } catch (err) {
-                // Fallback para navegadores antiguos
                 console.error('Error al copiar: ', err);
                 
-                // Método alternativo
                 const textArea = document.createElement('textarea');
                 textArea.value = generateAppointmentText();
                 document.body.appendChild(textArea);
@@ -628,7 +694,6 @@
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 
-                // Mostrar notificación de éxito
                 showCopyNotification();
             }
         }
@@ -661,26 +726,21 @@
             const time = document.getElementById('time').value;
             const isTodayAppointment = document.getElementById('sameDayAppointment').checked;
             
-            // Actualizar los elementos de vista previa
             document.getElementById('preview-course').textContent = course.toUpperCase();
             document.getElementById('preview-name').textContent = capitalizeName(name);
             document.getElementById('preview-id').textContent = id;
             
-            // Formatear y mostrar la fecha
             if (date) {
                 const formattedDate = formatDate(date);
                 document.getElementById('preview-date').innerHTML = formattedDate;
                 
-                // Verificar si es hoy y mostrar badge
                 if (isToday(new Date(date))) {
                     const badge = document.createElement('span');
                     badge.className = 'urgent-badge';
                     badge.textContent = 'HOY';
                     badge.id = 'preview-today-badge';
                     document.getElementById('preview-date').appendChild(badge);
-                    document.getElementById('todayBadge').style.display = 'inline-block';
                 } else {
-                    document.getElementById('todayBadge').style.display = 'none';
                     const existingBadge = document.getElementById('preview-today-badge');
                     if (existingBadge) {
                         existingBadge.remove();
@@ -688,10 +748,8 @@
                 }
             } else {
                 document.getElementById('preview-date').textContent = "6/02/2026";
-                document.getElementById('todayBadge').style.display = 'none';
             }
             
-            // Formatear y mostrar la hora
             if (time) {
                 document.getElementById('preview-time').textContent = formatTime(time);
             } else {
@@ -704,13 +762,12 @@
             const today = new Date();
             const formattedDate = today.toISOString().split('T')[0];
             document.getElementById('date').value = formattedDate;
-            document.getElementById('date').min = formattedDate; // Permitir hoy y futuras fechas
+            document.getElementById('date').min = formattedDate;
             updatePreview();
         }
         
         // Función para generar la confirmación
         function generateConfirmation() {
-            // Validar que todos los campos estén completos
             const course = document.getElementById('course').value;
             const name = document.getElementById('name').value;
             const id = document.getElementById('id').value;
@@ -718,28 +775,24 @@
             const time = document.getElementById('time').value;
             
             if (!course || !name || !id || !date || !time) {
-                alert("Por favor, complete todos los campos del formulario antes de generar la confirmación.");
+                alert("Por favor, complete todos los campos del formulario.");
                 return;
             }
             
-            // Verificar si es una cita para hoy
             const isTodayAppointment = isToday(new Date(date));
             
-            // Mostrar mensaje especial si es para hoy
             if (isTodayAppointment) {
-                const confirmToday = confirm("⚠️ ESTÁS AGENDANDO UNA CITA PARA HOY MISMO.\n\n¿Estás seguro de que la cita es para hoy?");
+                const confirmToday = confirm("⚠️ CITA PARA HOY MISMO\n\n¿Confirmar que la cita es para hoy?");
                 if (!confirmToday) {
                     return;
                 }
             }
             
-            // Actualizar la vista previa
             updatePreview();
             
-            // Mostrar mensaje de éxito
-            let successMessage = "¡Confirmación de cita generada con éxito!\n\nLos datos han sido actualizados en la vista previa.";
+            let successMessage = "¡Confirmación de cita generada con éxito!";
             if (isTodayAppointment) {
-                successMessage = "⚡ ¡CITA PARA HOY AGENDADA CON ÉXITO!\n\nLos datos han sido actualizados en la vista previa. Recuerda notificar al estudiante inmediatamente.";
+                successMessage = "⚡ ¡CITA PARA HOY AGENDADA CON ÉXITO!";
             }
             
             alert(successMessage);
@@ -751,36 +804,33 @@
             document.getElementById('name').value = "Víctor Alfonso Escorcia Vellio";
             document.getElementById('id').value = "1001937397";
             
-            // Establecer fecha por defecto (mañana)
             const today = new Date();
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
             const formattedDate = tomorrow.toISOString().split('T')[0];
             document.getElementById('date').value = formattedDate;
-            document.getElementById('date').min = formattedDate;
+            document.getElementById('date').min = today.toISOString().split('T')[0];
             
             document.getElementById('time').value = "16:00";
             document.getElementById('sameDayAppointment').checked = false;
             
-            updatePreview(); // Restablecer la vista previa a los valores por defecto
-            alert("Formulario restablecido. Puede ingresar nuevos datos.");
+            updatePreview();
+            alert("Formulario restablecido.");
         }
         
-        // Establecer valores iniciales
+        // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date();
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
             
-            // Formatear la fecha para el input date (YYYY-MM-DD)
             const formattedTomorrow = tomorrow.toISOString().split('T')[0];
             document.getElementById('date').value = formattedTomorrow;
-            document.getElementById('date').min = today.toISOString().split('T')[0]; // Permitir desde hoy
+            document.getElementById('date').min = today.toISOString().split('T')[0];
             
-            // Establecer valores iniciales en la vista previa
             updatePreview();
             
-            // Configurar eventos para el campo de curso
+            // Configurar eventos
             const courseInput = document.getElementById('course');
             courseInput.addEventListener('input', function() {
                 updatePreview();
@@ -789,25 +839,21 @@
             
             courseInput.addEventListener('focus', showCourseSuggestions);
             
-            // Ocultar sugerencias cuando se hace clic fuera
             document.addEventListener('click', function(e) {
                 if (e.target.id !== 'course' && !e.target.closest('.course-suggestion-item')) {
                     document.getElementById('courseSuggestions').style.display = 'none';
                 }
             });
             
-            // Configurar eventos para los otros campos
             document.getElementById('name').addEventListener('input', updatePreview);
             document.getElementById('id').addEventListener('input', updatePreview);
             document.getElementById('date').addEventListener('change', updatePreview);
             document.getElementById('time').addEventListener('change', updatePreview);
             
-            // Configurar el checkbox para cita hoy mismo
             document.getElementById('sameDayAppointment').addEventListener('change', function() {
                 if (this.checked) {
                     setDateToToday();
                 } else {
-                    // Si se desmarca, establecer fecha para mañana
                     const today = new Date();
                     const tomorrow = new Date(today);
                     tomorrow.setDate(tomorrow.getDate() + 1);
